@@ -48,7 +48,7 @@ class block_ual_navigation_renderer extends plugin_renderer_base {
         }
         return $content;
     }
-    /**
+     /**
      * Produces a navigation node for the navigation tree
      *
      * @param array $items
@@ -64,7 +64,7 @@ class block_ual_navigation_renderer extends plugin_renderer_base {
         if (count($items)==0) {
             return '';
         }
-
+ 
         // array of nested li elements
         $lis = array();
         foreach ($items as $item) {
@@ -162,9 +162,16 @@ class block_ual_navigation_renderer extends plugin_renderer_base {
                 $content = html_writer::empty_tag('hr') . $content;
             }
             $content = html_writer::tag('li', $content, $liattr);
-            $lis[] = $content;
+           
+            // djsomers - if in the context of a course - oinly show the active course
+            global $COURSE;
+            if($item->type === navigation_node::TYPE_COURSE && $COURSE->id!=1 && $COURSE->id!=$item->key) {
+               
+            } else {
+                $lis[] = $content;
+            }
         }
-
+       
         if (count($lis)) {
             return html_writer::tag('ul', implode("\n", $lis), $attrs);
         } else {
